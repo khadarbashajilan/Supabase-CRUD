@@ -1,5 +1,5 @@
 import {  useActionState, useEffect } from "react";
-import { supabase } from "./supabase";
+import { supabase } from "../supabase";
 
 const Form = ({ metrics }) => {
   // useActionState hook that manages form submission state

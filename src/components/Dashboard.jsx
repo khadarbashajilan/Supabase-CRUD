@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Chart } from "react-charts";
-import { dataFetched, supabase } from "./supabase";
+import { dataFetched, supabase } from "../supabase";
 import Form from "./Form";
 function Dashboard() {
   // State to store the fetched data
