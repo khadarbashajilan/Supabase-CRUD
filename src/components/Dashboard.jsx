@@ -8,9 +8,23 @@ function Dashboard() {
   // State to store the fetched data
   const [sdata, setData] = useState([]);
 
-  const {signOutUser} = useAuth()
+  const {signOutUser, session} = useAuth()
 
   const navigate = useNavigate()
+
+
+  const handleSignOut = async (e) => {
+    e.preventDefault();
+
+    const { success, error } = await signOutUser();
+    if (success) {
+      console.log("SiginOut Successfull")
+      navigate("/")
+    }else{
+      console.error("Error While Signing Out - ",error)
+      throw new Error(error)
+    }
+  }
 
   // Function to fetch data from Supabase
   async function fetchData() {
@@ -88,7 +102,8 @@ function Dashboard() {
       <div className="flex  justify-around w-[100%]">
 
       <h1 className="text-red-500">Sales Deals</h1>
-      <button className="border-2 cursor-pointer" onClick={()=>{signOutUser; navigate("/")}}>SignOut</button>
+      <h2>Welcome, {session?.user?.email}</h2>
+      <button className="border-2 cursor-pointer" onClick={handleSignOut}>SignOut</button>
       </div>
       <div className="flex h-100 w-300">
         <Chart
