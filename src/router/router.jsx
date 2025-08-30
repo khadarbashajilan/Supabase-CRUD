@@ -1,12 +1,17 @@
 import Signin from '../components/Signin'
-import App from '../App'
 import { createBrowserRouter } from 'react-router-dom';
 import Signup from '../components/Signup';
+import TrackAuth from './TrackAuth';
+import Wrapper from './Wrapper';
 
 
 const routes = [
     {
-        path : '/',
+        path:"/",
+        element:<Wrapper/>
+    },
+    {
+        path : '/signin',
         element: <Signin/>
     },
     {
@@ -15,7 +20,7 @@ const routes = [
     },
     {
         path: '/dashboard',
-        element : <App/>
+        element : <TrackAuth/>
     },
 ];
 export const router = createBrowserRouter(routes)

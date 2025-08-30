@@ -58,26 +58,28 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  const signOutUser = async () =>{
+ const signOutUser = async () => {
     try {
-         const {  error } = await supabase.auth.signOut()
+      const { error } = await supabase.auth.signOut();
 
-        if (error) {
-            console.error("Error while signing out:", error.message);
-            return { success: false, error: error.message };
-        }
-        console.log("Supabase sign out success")
-        } catch (e) {
-        console.error("Unexpected Error while Signing Out : ",e)
-        return {success: false, error: 'Unexpected error agaya bhai'}
+      if (error) {
+        console.error("Error while signing out:", error.message);
+        return { error: error.message };
+      }
+
+      console.log("Supabase sign out success");
+      return {  error: false };
+    } catch (e) {
+      console.error("Unexpected Error while Signing Out : ", e);
+      return {  error: 'Unexpected error occurred' };
     }
-  }
+  };
 
   const signUpUser = async (email, password) => {
     try {
          const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
+            email:email.toLowerCase(),
+            password:password,
         });
 
         if (error) {
@@ -85,6 +87,7 @@ export const AuthContextProvider = ({ children }) => {
             return { success: false, error: error.message };
         }
         console.log("Supabase sign up success : ",data)
+        return {success:true, data}
     } catch (e) {
         console.error("Unexpected Error while Signing UP : ",e)
         return {success: false, error: 'Unexpected error agaya bhai'}

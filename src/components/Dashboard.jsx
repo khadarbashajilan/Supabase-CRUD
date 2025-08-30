@@ -8,23 +8,23 @@ function Dashboard() {
   // State to store the fetched data
   const [sdata, setData] = useState([]);
 
-  const {signOutUser, session} = useAuth()
+  const { signOutUser, session } = useAuth();
 
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   const handleSignOut = async (e) => {
     e.preventDefault();
 
-    const { success, error } = await signOutUser();
-    if (success) {
-      console.log("SiginOut Successfull")
-      navigate("/")
+    const { error  }= await signOutUser();
+    if (error) {
+      console.error("Error While Signing Out -", error);
+      throw new Error(error);
     }else{
-      console.error("Error While Signing Out - ",error)
-      throw new Error(error)
+
+      console.log("SignOut Successful");
+      navigate("/signin");
     }
-  }
+  };
 
   // Function to fetch data from Supabase
   async function fetchData() {
@@ -77,19 +77,20 @@ function Dashboard() {
   useEffect(() => {
     fetchData();
     const channel = supabase
-      .channel('deal-changes')
+      .channel("deal-changes")
       .on(
-        'postgres_changes',
-        { 
-          event: '*', 
-          schema: 'public', 
-          table: 'sales_deals'  
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "sales_deals",
         },
         (payload) => {
-          console.log(payload)
+          console.log(payload);
           // Action
-          console.log(payload.new)
-        })
+          console.log(payload.new);
+        }
+      )
       .subscribe();
     // Clean up subscription
     return () => {
@@ -100,10 +101,11 @@ function Dashboard() {
   return (
     <>
       <div className="flex  justify-around w-[100%]">
-
-      <h1 className="text-red-500">Sales Deals</h1>
-      <h2>Welcome, {session?.user?.email}</h2>
-      <button className="border-2 cursor-pointer" onClick={handleSignOut}>SignOut</button>
+        <h1 className="text-red-500">Sales Deals</h1>
+        <h2>Welcome, {session?.user?.email}</h2>
+        <button className="border-2 cursor-pointer" onClick={handleSignOut}>
+          SignOut
+        </button>
       </div>
       <div className="flex h-100 w-300">
         <Chart
